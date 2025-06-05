@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build:sass": "sass 'markdown-previewer:dist/markdown-previewer'",
+    "build:js": "babel . --out-dir dist --extensions \".jsx\"",
+    "build:html": "cp markdown-previewer/index.html dist/markdown-previewer/index.html && cp drum-machine/index.html dist/drum-machine/index.html",
+    "build:sass2": "for f in */*.sass; do sass \"$f\":\"dist/${f%.sass}.css\"; done",
+    "build": "npm run build:sass2 && npm run build:js && npm run build:html",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-react": "^7.27.1",
+    "sass": "^1.89.1"
+  }
+}

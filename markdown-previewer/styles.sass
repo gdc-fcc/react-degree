@@ -1,0 +1,50 @@
+body
+  background: #333
+  font-family: ubuntu, Helvetica Neue, sans-serif
+
+.container
+  display: flex
+  gap: 20px
+
+#editor
+  width: 450px
+  height: 90vh
+  padding: 10px
+
+#preview 
+  text-wrap: wrap
+  background-color: #161616
+  color: white
+  width: 450px
+  padding: 10px
+  border-radius: 10px
+  img
+    outline: 1px solid grey
+    border-radius: 5px
+  h1
+    color: #dbdbdb
+  h2
+    color: #dbdbdb
+  td,th
+    outline: 2px solid #969696
+    padding: 10px
+  pre
+    border: 1px solid #bcbcbc
+    padding: 5px
+    border-radius: 3px
+    background: #100838
+  a:link
+    color: oklch(0.89 0.06 253.23)
+  code
+    color: oklch(0.83 0.17 -276.06 / 1)
+    background: #100838
+  blockquote
+    color: lightgrey
+    position: relative
+  blockquote:before
+    content: '>'
+    display: inline
+    position: absolute
+    left: -20px
+  table
+    color: white
