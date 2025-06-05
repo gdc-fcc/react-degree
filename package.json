@@ -1,10 +1,9 @@
 {
   "scripts": {
-    "build:sass": "sass 'markdown-previewer:dist/markdown-previewer'",
-    "build:js": "babel . --out-dir dist --extensions \".jsx\"",
-    "build:html": "cp markdown-previewer/index.html dist/markdown-previewer/index.html && cp drum-machine/index.html dist/drum-machine/index.html",
-    "build:sass2": "for f in */*.sass; do sass \"$f\":\"dist/${f%.sass}.css\"; done",
-    "build": "npm run build:sass2 && npm run build:js && npm run build:html",
+    "build:copy": "cp -r markdown-previewer dist/ && cp -r drum-machine dist/",
+    "build:sass": "sass dist:dist",
+    "build:js": "babel dist --out-dir dist --extensions \".jsx\" --source-maps",
+    "build": "npm run build:copy && npm run build:sass && npm run build:js",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
