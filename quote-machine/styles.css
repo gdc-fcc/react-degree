@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
+
+#quote-box {
+  position: absolute;
+  background: rgb(53, 1, 53);
+  color: white;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  font-size: 1.75rem;
+  padding: 2rem;
+  border-radius: .5rem;
+  box-shadow: 1rem 1rem 2rem 2rem rgba(108, 102, 102, 0.4);
+  font-family: sans-serif;
+  transition: 200ms;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 300px;
+}
+
+#author {
+  font-size: 1rem;
+  align-self: flex-end;
+  justify-self:center;
+}
+
+#text {
+  font-size: 2rem;
+}
+
+#quote_container {
+  font-size: 6rem;
+  font-family: 'Rubik Distressed', cursive;
+  height: 100%;
+  width: 100%;
+  vertical-align: middle;
+  margin:auto;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+body {
+  height: 100%;
+}
+
+#author::before {
+  content: "-"
+}
+
+button {
+  font-size: 1rem;
+  justify-self: flex-end;
+  margin-top: auto;
+}
+
+body {
+  background: black;
+  font-family: sans-serif;
+}
+
+a {
+  color: white;
+  font-size: 1rem;
+}
