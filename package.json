@@ -2,7 +2,7 @@
   "scripts": {
     "build:copy": "cp -r src dist",
     "build:sass": "sass dist:dist",
-    "build:js": "babel dist --out-dir dist --extensions \".jsx\" --source-maps",
+    "build:js": "babel dist --out-dir dist --extensions \".jsx\" --source-maps --presets @babel/preset-react",
     "build": "npm run build:copy && npm run build:sass && npm run build:js",
     "clean": "rm -rf dist"
   },
