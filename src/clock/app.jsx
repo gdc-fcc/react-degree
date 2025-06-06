@@ -1,0 +1,78 @@
+import "https://unpkg.com/react@16/umd/react.production.min.js";
+import "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js";
+
+const NumberInput = ({ prefix, get, set, label }) => {
+    const ns = (id) => prefix + "-" + id;
+    const inc = () => set((x) => (x < 60 ? x + 1 : x));
+    const dec = () => set((x) => (x > 0 ? x - 1 : x));
+    return (
+        <div>
+            <label id={ns("label")}>{label}</label>
+            <button id={ns("decrement")} onClick={dec}>
+                Less
+            </button>
+            <div id={ns("length")} className="input-value">
+                {get}
+            </div>
+            <button id={ns("increment")} onClick={inc}>
+                More
+            </button>
+        </div>
+    );
+};
+
+const ShowTime = ({remainingTime}) => {
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+    };
+    return <div id="time-left">{formatTime(remainingTime)}</div>
+};
+
+const App = () => {
+    const [breakLength, setBreakLength] = React.useState(5);
+    const [sessionLength, setSessionLength] = React.useState(25);
+    const [remainingTime, setRemainingTime] = React.useState(25 * 60);
+    const [isRunning, setIsRunning] = React.useState(false);
+
+    React.useEffect(() => {
+        setRemainingTime(sessionLength * 60);
+    }, [sessionLength]);
+
+    const reset = () => {
+        setBreakLength(5);
+        setSessionLength(25);
+        setIsRunning(false);
+    };
+
+    const toggleTimer = () => {
+        setIsRunning((prev) => !prev);
+    };
+
+    React.useEffect(() => {
+        console.log(isRunning);
+    }, [isRunning]);
+
+    return (
+        <div>
+            <h1>25 + 5 Clock</h1>
+            <div>
+                <NumberInput prefix="break" get={breakLength} set={setBreakLength} label="Break Length" />
+                <NumberInput prefix="session" get={sessionLength} set={setSessionLength} label="Session Length" />
+            </div>
+            <div>
+                <label id="timer-label">Session</label>
+                <ShowTime remainingTime={remainingTime} />
+                <button id="start_stop" onClick={toggleTimer}>
+                    Start/Stop
+                </button>
+                <button id="reset" onClick={reset}>
+                    Reset
+                </button>
+            </div>
+        </div>
+    );
+};
+
+ReactDOM.render(<App />, document.getElementById("app"));
