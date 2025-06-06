@@ -20,11 +20,7 @@ function TwitterQuote(quote) {
     );
 }
 
-const QuoteMachine = ({}) => {
-    const [state, setState] = React.useState({
-        quote: quotes[0].quote,
-        author: quotes[0].author,
-    });
+const RandomQuoteButton = ({ setState }) => {
     const updateQuote = () => {
         const index = Math.floor(Math.random() * quotes.length);
         setState({
@@ -32,6 +28,18 @@ const QuoteMachine = ({}) => {
             author: quotes[index].author,
         });
     };
+    return (
+        <button id="new-quote" onClick={updateQuote}>
+            New Quote
+        </button>
+    );
+};
+
+const QuoteMachine = ({}) => {
+    const [state, setState] = React.useState({
+        quote: quotes[0].quote,
+        author: quotes[0].author,
+    });
     const nchar = state.quote.length;
     const style = nchar > 200 ? { fontSize: "1.5rem" } : {};
     const style2 = nchar > 200 ? { fontSize: "4rem" } : {};
@@ -46,10 +54,7 @@ const QuoteMachine = ({}) => {
                     {state.quote}
                 </div>
                 <div id="author">{state.author}</div>
-                <button id="new-quote" onClick={updateQuote}>
-                    New Quote
-                </button>
-
+                <RandomQuoteButton setState={setState} />
                 <TwitterQuote author={state.author} text={state.quote} />
             </div>
         </div>
