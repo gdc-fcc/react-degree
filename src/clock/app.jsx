@@ -35,6 +35,7 @@ const App = () => {
     const [sessionLength, setSessionLength] = React.useState(25);
     const [remainingTime, setRemainingTime] = React.useState(25 * 60);
     const [isRunning, setIsRunning] = React.useState(false);
+    const [timer, setTimer] = React.useState(null);
 
     React.useEffect(() => {
         setRemainingTime(sessionLength * 60);
@@ -51,7 +52,19 @@ const App = () => {
     };
 
     React.useEffect(() => {
-        console.log(isRunning);
+        clearInterval(timer);
+        if (isRunning) {
+            const tmr = setInterval(() => {
+                setRemainingTime((prev) => {
+                    if (prev <= 0) {
+                        clearInterval(timer);
+                        return sessionLength * 60;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            setTimer(tmr);
+        }
     }, [isRunning]);
 
     return (
