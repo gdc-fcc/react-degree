@@ -15,47 +15,60 @@ const audio_samples = {
 const getSrc = sample => prefix + sample + ".mp3";
 const DrumPad = ({
   letter = "C",
-  setText
+  setText,
+  pads
 }) => {
   const id = audio_samples[letter],
     src = getSrc(id);
+  const audio = React.useRef(null);
+  const pad = React.useRef(null);
+  pads[id] = pad;
   const handleClick = () => {
     setText(id);
-    document.querySelector("#" + letter).play();
+    audio.current.play();
   };
   return /*#__PURE__*/React.createElement("button", {
     class: "drum-pad",
     id: id,
+    ref: pad,
     onClick: handleClick
   }, letter, /*#__PURE__*/React.createElement("audio", {
     class: "clip",
     id: letter,
-    src: src
+    src: src,
+    ref: audio
   }));
 };
 const PadsContainer = ({
-  setText
+  setText,
+  pads
 }) => /*#__PURE__*/React.createElement("div", {
   className: "pads-container"
 }, Object.keys(audio_samples).map(letter => {
   return /*#__PURE__*/React.createElement(DrumPad, {
     letter: letter,
-    setText: setText
+    setText: setText,
+    pads: pads
   });
 }));
 const App = () => {
+  const pads = {};
+  const handleClick = event => {
+    console.log('event!key', event.key);
+    const sample = audio_samples[event.key.toUpperCase()];
+    sample ? pads[sample].current.click() : null;
+  };
   const [text, setText] = React.useState('');
   return /*#__PURE__*/React.createElement("div", {
-    id: "drum-machine"
+    id: "drum-machine",
+    onKeyDown: handleClick,
+    tabIndex: "1"
   }, /*#__PURE__*/React.createElement(PadsContainer, {
-    setText: setText
+    setText: setText,
+    pads: pads
   }), /*#__PURE__*/React.createElement("div", {
     id: "display"
   }, text));
 };
 ReactDOM.render(/*#__PURE__*/React.createElement(App, null), document.getElementById('app'));
-document.addEventListener('keydown', function (event) {
-  const sample = audio_samples[event.key.toUpperCase()];
-  sample ? document.querySelector("#" + sample).click() : null;
-});
 //# sourceMappingURL=script.js.map
