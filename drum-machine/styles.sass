@@ -1,0 +1,48 @@
+.drum-pad
+  width: 120px
+  height: 120px
+  background: grey
+  color: white
+  font-size: 5em
+  font-family: ubuntu, roboto, sans-serif
+  text-align: center
+  line-height: 120px
+  cursor: pointer
+  user-select: none
+  border-radius: 15px
+  border: 0
+  padding: 0
+
+.drum-pad:active
+  background: black
+
+.pads-container  
+  display: flex
+  gap: 5px
+  flex-wrap: wrap
+  padding: 20px
+
+  
+#drum-machine
+  border: 1px solid
+  width: 410px
+  position: fixed
+  left: 50%
+  top: 50%
+  transform: translate(-50%, -50%)
+  background: black
+  border-radius: 20px
+  overflow: hidden
+
+#display
+  height: 110px
+  width: 410px
+  background: #540e31
+  line-height: 110px
+  font-size: 4em
+  font-family: ubuntu
+  text-align: center
+  color: white
+  
+body
+  background: #2c2c2c

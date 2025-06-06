@@ -58,3 +58,4 @@ document.addEventListener('keydown', function (event) {
   const sample = audio_samples[event.key.toUpperCase()];
   sample ? document.querySelector("#" + sample).click() : null;
 });
+//# sourceMappingURL=script.js.map
