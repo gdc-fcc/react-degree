@@ -46,11 +46,11 @@ const App = () => {
   const handleInput = (input) => {
     console.log(text)
     if (input === "=")
-      return
+      return setText(text => eval(text.replaceAll("x", "*")))
     if (input === "AC")
       setText(_ => "0")
     else
-      setText(cuttentText => cuttentText+input)
+      setText(text => text === "0" ? input : text + input)
   }
   return <div id="calculator" style={{marginTop: "4rem"}}>
     <div id="display" style={{textAlign: "right"}}>{text}</div>
