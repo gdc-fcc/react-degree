@@ -4,7 +4,7 @@ import "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js";
 const NumberInput = ({ prefix, get, set, label }) => {
     const ns = (id) => prefix + "-" + id;
     const inc = () => set((x) => (x < 60 ? x + 1 : x));
-    const dec = () => set((x) => (x > 0 ? x - 1 : x));
+    const dec = () => set((x) => (x > 1 ? x - 1 : x));
     return (
         <div>
             <label id={ns("label")}>{label}</label>
@@ -21,13 +21,13 @@ const NumberInput = ({ prefix, get, set, label }) => {
     );
 };
 
-const ShowTime = ({remainingTime}) => {
+const ShowTime = ({ remainingTime }) => {
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const secs = seconds % 60;
-        return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+        return `${minutes < 10 ? "0" + minutes : minutes}:${secs < 10 ? "0" + secs : secs}`;
     };
-    return <div id="time-left">{formatTime(remainingTime)}</div>
+    return <div id="time-left">{formatTime(remainingTime)}</div>;
 };
 
 const App = () => {
