@@ -8,9 +8,7 @@ const audio_samples = {Q: "Heater-1",W: "Heater-2",E: "Heater-3",A: "Heater-4_1"
 
 const getSrc = sample => prefix + sample + ".mp3"
 
-const pads = {};
-
-const DrumPad = ({letter = "C", setText}) => {
+const DrumPad = ({letter = "C", setText, pads}) => {
   const id = audio_samples[letter], src = getSrc(id)
   const audio = React.useRef(null);
   const pad = React.useRef(null);
@@ -26,25 +24,26 @@ const DrumPad = ({letter = "C", setText}) => {
     </button>
 }
 
-const PadsContainer = ({setText}) => (
+const PadsContainer = ({setText, pads}) => (
   <div className="pads-container">{
     Object.keys(audio_samples).map(letter => {
-      return <DrumPad letter={letter} setText = {setText}/>
+      return <DrumPad letter={letter} setText = {setText} pads={pads}/>
     })
   }</div>
 )
 
 const App = () => {
+  const pads = {};
+  const handleClick = (event) => {
+    console.log('event!key', event.key)
+    const sample = audio_samples[event.key.toUpperCase()]
+    sample ? pads[sample].current.click() : null;
+  }
   const [text, setText] = React.useState('')
-  return <div id="drum-machine">
-    <PadsContainer setText={setText}/>
+  return <div id="drum-machine" onKeyDown={handleClick} tabIndex ="1">
+    <PadsContainer setText={setText} pads={pads}/>
     <div id="display">{text}</div>
   </div>
 }
 
 ReactDOM.render(<App/>, document.getElementById('app'));
-
-document.addEventListener('keydown', function(event){
-  const sample = audio_samples[event.key.toUpperCase()]
-  sample ? pads[sample].current.click() : null;
-})
