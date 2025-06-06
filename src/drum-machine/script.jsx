@@ -8,17 +8,21 @@ const audio_samples = {Q: "Heater-1",W: "Heater-2",E: "Heater-3",A: "Heater-4_1"
 
 const getSrc = sample => prefix + sample + ".mp3"
 
+const pads = {};
+
 const DrumPad = ({letter = "C", setText}) => {
   const id = audio_samples[letter], src = getSrc(id)
-  const audioEl = <audio class="clip" id={letter} src={src}/>
+  const audio = React.useRef(null);
+  const pad = React.useRef(null);
+  pads[id] = pad;
   const handleClick = () => {
     setText(id)
-    audioEl.play()
+    audio.current.play();
   }
-  return <button class="drum-pad" id={id} 
+  return <button class="drum-pad" id={id} ref = {pad}
                  onClick={handleClick}>
       {letter}
-      {audioEl}
+      <audio class="clip" id={letter} src={src} ref={audio}/>
     </button>
 }
 
@@ -42,5 +46,5 @@ ReactDOM.render(<App/>, document.getElementById('app'));
 
 document.addEventListener('keydown', function(event){
   const sample = audio_samples[event.key.toUpperCase()]
-  sample ? document.querySelector("#" + sample).click() : null;
+  sample ? pads[sample].current.click() : null;
 })
