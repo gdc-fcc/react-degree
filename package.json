@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:copy": "cp -r markdown-previewer dist/ && cp -r drum-machine dist/ && cp -r quote-machine dist/",
+    "build:copy": "cp -r markdown-previewer dist/ && cp -r drum-machine dist/ && cp -r quote-machine dist/ && cp index.html dist/",
     "build:sass": "sass dist:dist",
     "build:js": "babel dist --out-dir dist --extensions \".jsx\" --source-maps",
     "build": "npm run build:copy && npm run build:sass && npm run build:js",
