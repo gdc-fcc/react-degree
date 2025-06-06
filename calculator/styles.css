@@ -1,0 +1,14 @@
+.key:hover {
+  background: black !important
+}
+
+body {
+  font-size: 2rem;
+  font-family: Arial, Ubuntu, sans-serif;
+  font-family: "Courier New", monospace;
+}
+
+#app {
+  max-width: 20rem;
+  margin: auto;
+}
