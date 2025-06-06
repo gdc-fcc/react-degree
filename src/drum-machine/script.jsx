@@ -10,14 +10,15 @@ const getSrc = sample => prefix + sample + ".mp3"
 
 const DrumPad = ({letter = "C", setText}) => {
   const id = audio_samples[letter], src = getSrc(id)
+  const audioEl = <audio class="clip" id={letter} src={src}/>
   const handleClick = () => {
     setText(id)
-    document.querySelector("#" + letter).play()
+    audioEl.play()
   }
   return <button class="drum-pad" id={id} 
                  onClick={handleClick}>
       {letter}
-      <audio class="clip" id={letter} src={src}/>
+      {audioEl}
     </button>
 }
 
