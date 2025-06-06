@@ -15,42 +15,45 @@ const audio_samples = {
 
 const getSrc = (sample) => "https://cdn.freecodecamp.org/testable-projects-fcc/audio/" + sample + ".mp3";
 
-const DrumPad = ({ letter = "C", setText, pads }) => {
-    const id = audio_samples[letter],
-        src = getSrc(id);
-    const audio = React.useRef(null);
-    const pad = React.useRef(null);
-    pads[letter.toLowerCase()] = pad;
+const DrumPad = ({ pad }) => {
+    const { letter, ref, sampleId } = pad,
+        src = getSrc(sampleId),
+        audio = React.useRef(null);
     const handleClick = () => {
-        setText(id);
+        pad.updateDisplay();
         audio.current.play();
     };
     return (
-        <button class="drum-pad" id={id} ref={pad} onClick={handleClick}>
+        <button className="drum-pad" id={sampleId} ref={ref} onClick={handleClick}>
             {letter}
-            <audio class="clip" id={letter} src={src} ref={audio} />
+            <audio className="clip" id={letter} src={src} ref={audio} />
         </button>
     );
 };
 
-const PadsContainer = ({ setText, pads }) => (
+const PadsContainer = ({ pads }) => (
     <div className="pads-container">
-        {Object.keys(audio_samples).map((letter) => {
-            return <DrumPad letter={letter} setText={setText} pads={pads} />;
-        })}
+        {pads.map((pad) => (
+            <DrumPad pad={pad} key={pad.letter}/>
+        ))}
     </div>
 );
 
 const App = () => {
-    const pads = {};
-    const handleKeyDown = (event) => {
-        const pad = pads[event.key.toLowerCase()];
-        pad ? pad.current.click() : null;
-    };
     const [text, setText] = React.useState("");
+    const pads = Object.entries(audio_samples).map(([letter, sampleId]) => ({
+        letter,
+        sampleId,
+        ref: React.createRef(),
+        updateDisplay: () => setText(sampleId),
+    }));
+    const handleKeyDown = (event) => {
+        const pad = pads.find((pad) => pad.letter === event.key.toUpperCase());
+        pad ? pad.ref.current.click() : null;
+    };
     return (
-        <div id="drum-machine" onKeyDown={handleKeyDown} tabIndex="1">
-            <PadsContainer setText={setText} pads={pads} />
+        <div id="drum-machine" onKeyDown={handleKeyDown} tabIndex="0">
+            <PadsContainer pads={pads} />
             <div id="display">{text}</div>
         </div>
     );

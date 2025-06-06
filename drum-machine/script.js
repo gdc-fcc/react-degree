@@ -13,56 +13,56 @@ const audio_samples = {
 };
 const getSrc = sample => "https://cdn.freecodecamp.org/testable-projects-fcc/audio/" + sample + ".mp3";
 const DrumPad = ({
-  letter = "C",
-  setText,
-  pads
+  pad
 }) => {
-  const id = audio_samples[letter],
-    src = getSrc(id);
-  const audio = React.useRef(null);
-  const pad = React.useRef(null);
-  pads[letter.toLowerCase()] = pad;
+  const {
+      letter,
+      ref,
+      sampleId
+    } = pad,
+    src = getSrc(sampleId),
+    audio = React.useRef(null);
   const handleClick = () => {
-    setText(id);
+    pad.updateDisplay();
     audio.current.play();
   };
   return /*#__PURE__*/React.createElement("button", {
-    class: "drum-pad",
-    id: id,
-    ref: pad,
+    className: "drum-pad",
+    id: sampleId,
+    ref: ref,
     onClick: handleClick
   }, letter, /*#__PURE__*/React.createElement("audio", {
-    class: "clip",
+    className: "clip",
     id: letter,
     src: src,
     ref: audio
   }));
 };
 const PadsContainer = ({
-  setText,
   pads
 }) => /*#__PURE__*/React.createElement("div", {
   className: "pads-container"
-}, Object.keys(audio_samples).map(letter => {
-  return /*#__PURE__*/React.createElement(DrumPad, {
-    letter: letter,
-    setText: setText,
-    pads: pads
-  });
-}));
+}, pads.map(pad => /*#__PURE__*/React.createElement(DrumPad, {
+  pad: pad,
+  key: pad.letter
+})));
 const App = () => {
-  const pads = {};
-  const handleKeyDown = event => {
-    const pad = pads[event.key.toLowerCase()];
-    pad ? pad.current.click() : null;
-  };
   const [text, setText] = React.useState("");
+  const pads = Object.entries(audio_samples).map(([letter, sampleId]) => ({
+    letter,
+    sampleId,
+    ref: React.createRef(),
+    updateDisplay: () => setText(sampleId)
+  }));
+  const handleKeyDown = event => {
+    const pad = pads.find(pad => pad.letter === event.key.toUpperCase());
+    pad ? pad.ref.current.click() : null;
+  };
   return /*#__PURE__*/React.createElement("div", {
     id: "drum-machine",
     onKeyDown: handleKeyDown,
-    tabIndex: "1"
+    tabIndex: "0"
   }, /*#__PURE__*/React.createElement(PadsContainer, {
-    setText: setText,
     pads: pads
   }), /*#__PURE__*/React.createElement("div", {
     id: "display"

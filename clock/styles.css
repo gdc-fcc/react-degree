@@ -1,0 +1,19 @@
+body {
+  font-family: ubuntu, Helvetica Neue, sans-serif;
+}
+
+#app {
+  width: fit-content;
+  margin: auto;
+}
+
+label {
+  display: block;
+}
+
+.input-value {
+  display: inline;
+  margin-inline: 1rem;
+}
+
+/*# sourceMappingURL=styles.css.map */
