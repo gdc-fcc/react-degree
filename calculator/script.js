@@ -113,10 +113,20 @@ const Grid = ({
 const App = () => {
   const [text, setText] = React.useState("0");
   const handleInput = input => {
-    console.log(text);
     if (input === "=") return setText(text => eval(text.replaceAll("x", "*")));
     if (input === "AC") setText(_ => "0");else setText(text => {
-      return text === "0" ? input : text + input;
+      input = input === "*" ? "x" : input;
+      let ret = text === "0" ? input : text + input;
+      const lastTwo = ret.slice(ret.length - 2);
+      const last = ret[ret.length - 1];
+      if (/[+\-x/]-[\-+x/]$/.test(ret)) {
+        ret = ret.slice(0, ret.length - 3) + last;
+      } else if (lastTwo === ".." || lastTwo === "-+" || lastTwo === "+x" || lastTwo === "x/" || lastTwo === "/x" || lastTwo == "++") {
+        ret = ret.slice(0, ret.length - 2) + last;
+      } else if (/\.[0-9]*\.$/.test(ret)) {
+        ret = ret.slice(0, ret.length - 1);
+      }
+      return ret;
     });
   };
   return /*#__PURE__*/React.createElement("div", {
