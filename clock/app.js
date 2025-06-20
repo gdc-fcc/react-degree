@@ -43,6 +43,7 @@ const App = () => {
   const [isRunning, setIsRunning] = React.useState(false);
   const [timer, setTimer] = React.useState(null);
   const [phase, setPhase] = React.useState("Session");
+  const audio = React.useRef();
   React.useEffect(() => {
     setRemainingTime(sessionLength * sixty);
   }, [sessionLength]);
@@ -51,6 +52,8 @@ const App = () => {
     setSessionLength(25);
     setIsRunning(false);
     setPhase("Session");
+    audio.current.pause();
+    audio.current.currentTime = 0;
   };
   const toggleTimer = () => {
     setIsRunning(prev => !prev);
@@ -62,6 +65,7 @@ const App = () => {
       const tmr = setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 0) {
+            audio.current.play();
             if (globals.phase === "Session") {
               globals.phase = "Break";
               setPhase(globals.phase);
@@ -98,7 +102,12 @@ const App = () => {
   }, "Start/Stop"), /*#__PURE__*/React.createElement("button", {
     id: "reset",
     onClick: reset
-  }, "Reset")));
+  }, "Reset")), /*#__PURE__*/React.createElement("audio", {
+    id: "beep",
+    preload: "auto",
+    src: "https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav",
+    ref: audio
+  }));
 };
 ReactDOM.render(/*#__PURE__*/React.createElement(App, null), document.getElementById("app"));
 //# sourceMappingURL=app.js.map
