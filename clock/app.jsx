@@ -30,21 +30,26 @@ const ShowTime = ({ remainingTime }) => {
     return <div id="time-left">{formatTime(remainingTime)}</div>;
 };
 
+const sixty = 60;
+const globals = {};
+
 const App = () => {
     const [breakLength, setBreakLength] = React.useState(5);
     const [sessionLength, setSessionLength] = React.useState(25);
-    const [remainingTime, setRemainingTime] = React.useState(25 * 60);
+    const [remainingTime, setRemainingTime] = React.useState(25 * sixty);
     const [isRunning, setIsRunning] = React.useState(false);
     const [timer, setTimer] = React.useState(null);
+    const [phase, setPhase] = React.useState("Session");
 
     React.useEffect(() => {
-        setRemainingTime(sessionLength * 60);
+        setRemainingTime(sessionLength * sixty);
     }, [sessionLength]);
 
     const reset = () => {
         setBreakLength(5);
         setSessionLength(25);
         setIsRunning(false);
+        setPhase("Session");
     };
 
     const toggleTimer = () => {
@@ -54,11 +59,19 @@ const App = () => {
     React.useEffect(() => {
         clearInterval(timer);
         if (isRunning) {
+            globals.phase = phase;
             const tmr = setInterval(() => {
                 setRemainingTime((prev) => {
                     if (prev <= 0) {
-                        clearInterval(timer);
-                        return sessionLength * 60;
+                        if (globals.phase === "Session") {
+                            globals.phase = "Break";
+                            setPhase(globals.phase);
+                            return breakLength * sixty;
+                        } else {
+                            globals.phase = "Session";
+                            setPhase(globals.phase);
+                            return sessionLength * sixty;
+                        }
                     }
                     return prev - 1;
                 });
@@ -75,7 +88,7 @@ const App = () => {
                 <NumberInput prefix="session" get={sessionLength} set={setSessionLength} label="Session Length" />
             </div>
             <div>
-                <label id="timer-label">Session</label>
+                <label id="timer-label">{phase}</label>
                 <ShowTime remainingTime={remainingTime} />
                 <button id="start_stop" onClick={toggleTimer}>
                     Start/Stop

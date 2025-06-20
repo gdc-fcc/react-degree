@@ -34,19 +34,23 @@ const ShowTime = ({
     id: "time-left"
   }, formatTime(remainingTime));
 };
+const sixty = 60;
+const globals = {};
 const App = () => {
   const [breakLength, setBreakLength] = React.useState(5);
   const [sessionLength, setSessionLength] = React.useState(25);
-  const [remainingTime, setRemainingTime] = React.useState(25 * 60);
+  const [remainingTime, setRemainingTime] = React.useState(25 * sixty);
   const [isRunning, setIsRunning] = React.useState(false);
   const [timer, setTimer] = React.useState(null);
+  const [phase, setPhase] = React.useState("Session");
   React.useEffect(() => {
-    setRemainingTime(sessionLength * 60);
+    setRemainingTime(sessionLength * sixty);
   }, [sessionLength]);
   const reset = () => {
     setBreakLength(5);
     setSessionLength(25);
     setIsRunning(false);
+    setPhase("Session");
   };
   const toggleTimer = () => {
     setIsRunning(prev => !prev);
@@ -54,11 +58,19 @@ const App = () => {
   React.useEffect(() => {
     clearInterval(timer);
     if (isRunning) {
+      globals.phase = phase;
       const tmr = setInterval(() => {
         setRemainingTime(prev => {
           if (prev <= 0) {
-            clearInterval(timer);
-            return sessionLength * 60;
+            if (globals.phase === "Session") {
+              globals.phase = "Break";
+              setPhase(globals.phase);
+              return breakLength * sixty;
+            } else {
+              globals.phase = "Session";
+              setPhase(globals.phase);
+              return sessionLength * sixty;
+            }
           }
           return prev - 1;
         });
@@ -78,7 +90,7 @@ const App = () => {
     label: "Session Length"
   })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     id: "timer-label"
-  }, "Session"), /*#__PURE__*/React.createElement(ShowTime, {
+  }, phase), /*#__PURE__*/React.createElement(ShowTime, {
     remainingTime: remainingTime
   }), /*#__PURE__*/React.createElement("button", {
     id: "start_stop",
